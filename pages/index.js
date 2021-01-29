@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 
 const places = [
   {
@@ -97,9 +98,47 @@ export default function Home() {
           w-screen
           "
       >
+        {/* HEADER */}
+        <div
+          className="
+        bg-blue-200
+        w-full
+        flex
+        justify-between
+        h-16
+        "
+        >
+          <div
+            className="
+              flex
+              h-full
+              items-center  
+              text-3xl
+              font-extralight
+              ml-4
+            "
+          >
+            Mind Your Own Trip
+          </div>
+          <div
+            className="
+              flex
+              h-full
+              items-center  
+              text-md
+              font-extralight
+              mr-4
+            "
+          >
+            <Link href="/users">
+              <a>Users</a>
+            </Link>
+          </div>
+        </div>
         {/* GRID */}
         <div
           className="
+            p-4
             grid
             grid-cols-1
             sm:grid-cols-2
