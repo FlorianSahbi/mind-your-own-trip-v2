@@ -103,7 +103,7 @@ export default function Home({ places }) {
           "
       >
         {/* HEADER */}
-        <div
+        <nav
           className="
         bg-blue-200
         w-full
@@ -138,9 +138,9 @@ export default function Home({ places }) {
               <a>Users</a>
             </Link>
           </div>
-        </div>
+        </nav>
         {/* GRID */}
-        <div
+        <main
           className="
             p-4
             grid
@@ -220,7 +220,7 @@ export default function Home({ places }) {
               </div>
             )
           })}
-        </div>
+        </main>
       </div>
     </div>
   )
