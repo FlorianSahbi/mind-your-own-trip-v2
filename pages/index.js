@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
-const places = [
+const placess = [
   {
     name: "Lorem Ipsum Dolor Sit Amet",
     country: "United-State of America",
@@ -84,7 +85,8 @@ const places = [
   },
 ]
 
-export default function Home() {
+export default function Home({ places }) {
+  console.log(places);
   return (
     <div>
       <Head>
@@ -151,7 +153,7 @@ export default function Home() {
             "
         >
           {/* CARD */}
-          {places.map(({ name, src, country }) => {
+          {places.map(({ name, preview, country, addedBy }) => {
             return (
               <div
                 className="
@@ -182,7 +184,7 @@ export default function Home() {
                       object-cover
                       mr-4
                       "
-                    src="https://scontent-cdt1-1.xx.fbcdn.net/v/t1.0-9/68710781_2885361008146534_1548794064822861824_o.jpg?_nc_cat=106&ccb=2&_nc_sid=174925&_nc_ohc=0bc3sIy4H4MAX9FTzel&_nc_ht=scontent-cdt1-1.xx&oh=546f190f41225ba42450774f5064dd7e&oe=603989A3"
+                    src={addedBy.profilePicture}
                   />
                   {name}
                 </div>
@@ -193,7 +195,7 @@ export default function Home() {
                     object-cover
                     mr-4
                     "
-                  src={src}
+                  src={preview}
                 />
                 {/* FOOTER */}
                 <div
@@ -214,4 +216,38 @@ export default function Home() {
       </div>
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const client = new ApolloClient({
+    uri: 'https://mindyourowntrip.com/graphql/',
+    cache: new InMemoryCache()
+  });
+
+  const { data } = await client.query({
+    query: gql`
+     query GetPlaces {
+        getPlaces {
+          _id
+          name
+          country
+          preview
+          code
+          addedBy {
+            firstName
+            profilePicture
+          }
+          location {
+            coordinates
+          }
+        }
+      }
+    `
+  });
+
+  return {
+    props: {
+      places: data.getPlaces,
+    }
+  }
 }
