@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
 const placess = [
@@ -92,6 +93,7 @@ export default function Home({ places }) {
       <Head>
         <title>Mind Your Own Trip</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta name="description" content="Mind Your Own Trip by Delphine & FLo !" />
       </Head>
       {/* ROOT */}
       <div
@@ -184,7 +186,10 @@ export default function Home({ places }) {
                       object-cover
                       mr-4
                       "
+                    layout="fill"
+                    loading="lazy"
                     src={addedBy.profilePicture}
+                    alt={`pp-${addedBy.firstName}`}
                   />
                   {name}
                 </div>
@@ -195,7 +200,10 @@ export default function Home({ places }) {
                     object-cover
                     mr-4
                     "
+                  layout="fill"
+                  loading="lazy"
                   src={preview}
+                  alt={`preview-${name}`}
                 />
                 {/* FOOTER */}
                 <div
