@@ -1,45 +1,45 @@
 import Head from 'next/head'
-import { ApolloClient, InMemoryCache, gql, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, gql, useQuery } from '@apollo/client';
 import Header from '../components/header';
 import Places from '../components/places';
 import CreatePlaceForm from "../components/createPlaceForm";
-import { SnackbarProvider } from "notistack";
-const client = new ApolloClient({
-  uri: 'https://mindyourowntrip.com/graphql/',
-  cache: new InMemoryCache()
-});
-export default function Home({ places }) {
-  console.log(places);
-  return (
-    <ApolloProvider client={client}>
-      <SnackbarProvider
-        maxSnack={3}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        hideIconVariant
-      >
+import { GET_PLACES } from '../GraphQl/places';
 
-        <div>
-          <Head>
-            <title>Mind Your Own Trip</title>
-            <link rel="icon" href="/favicon.ico" />
-            <meta name="description" content="Mind Your Own Trip by Delphine & FLo !" />
-          </Head>
-          <Header />
-          <div
-            className="
+export default function Home() {
+  const { loading, error, data } = useQuery(GET_PLACES, {
+    onCompleted: data => console.log
+  })
+  if (error) {
+    return (
+      <p>Error...</p>
+    )
+  }
+  if (loading) {
+    return (
+      <p>Loading...</p>
+    )
+  }
+  if (data) {
+
+    return (
+      <div>
+        <Head>
+          <title>Mind Your Own Trip</title>
+          <link rel="icon" href="/favicon.ico" />
+          <meta name="description" content="Mind Your Own Trip by Delphine & FLo !" />
+        </Head>
+        <Header />
+        <div
+          className="
           h-screen
           w-screen
           "
-          >
-            <Places places={places} />
-          </div>
+        >
+          <Places places={data.getPlaces} />
         </div>
-      </SnackbarProvider>
-    </ApolloProvider>
-  )
+      </div>
+    )
+  }
 }
 
 export async function getStaticProps() {
